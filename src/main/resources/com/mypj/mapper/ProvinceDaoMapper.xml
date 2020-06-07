@@ -1,0 +1,30 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mypj.Dao.ProvinceDao">
+
+   <!--查询所有-->
+    <select id="findByPage" resultType="Province">
+        select  id,name,tags,placecounts
+        from t_provice
+        order by placecounts
+        limit #{start},#{rows}
+    </select>
+
+    <!--查询总条数-->
+    <select id="findTotals"  resultType="Integer">
+        select  count(id) from t_provice
+    </select>
+
+    <!--省份添加-->
+    <insert id="save" parameterType="Province" useGeneratedKeys="true" keyProperty="id">
+        insert into t_provice values(#{id},#{name},#{tags},#{placecounts})
+    </insert>
+
+    <!--省份删除-->
+    <delete id="delete" parameterType="String">
+        delete from  t_provice where id=#{id}
+    </delete>
+
+</mapper>
