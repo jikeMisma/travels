@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mypj.Dao.PlaceDao">
+
+    <!--根据省份id查询所有的景点信息并排序-->
+    <select id="findByProvinceIdPage" resultType="Place">
+        select
+         id,name,picpath,hottime,hotticket,dimticket,placedis,proviceid
+        from t_place
+        where proviceid=#{provinceId}
+        order by hotticket
+        limit #{start},#{rows}
+    </select>
+
+    <!--根据省份id查询当前省份所有景点个数-->
+    <select id="findByProvinceIdCounts" parameterType="String" resultType="Integer">
+        select count(id) from t_place where proviceid=#{provinceId}
+    </select>
+
+
+</mapper>
