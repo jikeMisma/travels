@@ -91,13 +91,13 @@
         <a href="addviewspot.html"><button type="button">添加景点</button></a>&emsp;
         <a href="../province/provincelist.html">返回省份列表</a>
         <div id="pages">
-            <a href="#" class="page">&lt;上一页</a>
-            <a href="#" class="page">1</a>
-            <a href="#" class="page">2</a>
-            <a href="#" class="page">3</a>
-            <a href="#" class="page">4</a>
-            <a href="#" class="page">5</a>
-            <a href="#" class="page">下一页&gt;</a>
+            <a href="javascript:;" v-if="page!=1" class="page" @click="findAllPage(page-1)">&lt;上一页</a>
+            <a href="javascript:;" v-if="page==1" >&lt;上一页</a>
+            <span  v-for="index in totalPage" >
+                 <a href="javascript:;" v-if="page==index"class="page" v-text="index"></a>
+            <a href="javascript:;" v-if="page!=index" @click="findAllPage(index)"  class="page" v-text="index"></a>
+            </span>
+            <a href="javascript:;" class="page" v-if="page!=totalPage" @click="findAllPage(page+1)">下一页&gt;</a>
         </div>
     </div>
     <div id="footer">
@@ -119,18 +119,33 @@
         data:{
 
             palces:[],
+            id:"",
+            totalPage:1,
+            page:1,
         },
         methods:{
+
+            //封装查询所有的函数
+            findAllPage(index){
+                _this=this;
+                if(index){
+                    this.page=index;
+                }
+
+                axios.get("http://localhost:8989/place/findAllPlace?provinceId="+this.id+"&page="+this.page).then((res)=>{
+                    _this.palces = res.data.places;
+                    _this.totalsPage = res.data.totalPage;
+                    _this.page=res.data.page;
+                });
+            }
 
         },
 
         created(){
            let id = location.href.substring( location.href.indexOf("=")+1);
-           console.log(id);
-           _this=this;
-           axios.get("http://localhost:8989/place/findAllPlace?provinceId="+id).then((res)=>{
-               _this.palces = res.data.places;
-           });
+           this.id = id;
+           this.findAllPage();
+
         }
     })
 
