@@ -27,4 +27,20 @@
         delete from  t_provice where id=#{id}
     </delete>
 
+
+    <!--查询一个-->
+    <select id="findOne" resultType="Province">
+        select  id,name,tags,placecounts
+        from t_provice
+        where  id = #{id}
+    </select>
+
+
+    <!--修改省份信息-->
+    <update id="update" parameterType="Province">
+        update  t_provice set name=#{name},tags=#{tags},placecounts=#{placecounts}
+        where id=#{id}
+    </update>
+
+
 </mapper>

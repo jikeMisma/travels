@@ -7,12 +7,12 @@
     <!--验证用户是否已经存在-->
     <!--用户登录-->
     <select id="findByUsername" parameterType="String" resultType="User">
-        select * from t_user where usrname = #{username}
+        select * from t_user where username = #{username}
     </select>
 
     <!--注册用户-->
     <insert id="save" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        insert into t_user value (#{id},#{usrname},#{password},#{email})
+        insert into t_user value (#{id},#{username},#{password},#{email})
     </insert>
 
 

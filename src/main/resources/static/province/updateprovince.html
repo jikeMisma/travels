@@ -29,6 +29,7 @@
     </style>
 </head>
 <body>
+<div id="app">
     <div id="wrap">
         <div id="header">
             <div style="float: right;padding-top: 24px">2009/11/20</div>
@@ -41,13 +42,13 @@
             <form action="provincelist.html" method="post">
                 <label>
                     <div class="label-text">省&emsp;份：</div>
-                    <input type="text" name="pname" value="北京市">
+                    <input type="text" v-model="province.name">
                 </label>
                 <label>
                     <div class="label-text">标&emsp;签：</div>
-                    <input type="text" name="ptag" value="首都、天安门">
+                    <input type="text" v-model="province.tags">
                 </label>
-                <button type="submit">提 交</button>&emsp;
+                <button type="button" @click="updateProvince">修 改</button>&emsp;
                 <a href="provincelist.html">返回</a>
             </form>
         </div>
@@ -55,5 +56,49 @@
             ABC@126.com
         </div>
     </div>
+</div>
 </body>
 </html>
+
+
+<script src="../js/vue.js"></script>
+<script src="../js/axios.min.js"></script>
+<script>
+    const app = new Vue({
+        el:"#app",
+        data:{
+            id:"",
+            province:{}
+        },
+        methods:{
+
+            findOnePrivince(id){
+                _this = this;
+                axios.get("http://localhost:8989/province/findOne?id="+id).then((res)=>{
+                   console.log( res.data);
+                    _this.province = res.data;
+                });
+            },
+
+            //修改省份信息
+            updateProvince(){
+                axios.post("http://localhost:8989/province/update",this.province).then((res)=>{
+                    if(res.data.states){
+                        alert(res.data.mag+"，点击确定回到主页");
+                        location.href="./provincelist.html";
+                    }else{
+                        alert(res.data.mag);
+                    }
+                });
+            }
+
+        },
+        created(){
+            //获取id
+            this.id=location.href.substring(location.href.indexOf("=")+1);
+            this.findOnePrivince(this.id);
+
+        }
+    })
+
+</script>

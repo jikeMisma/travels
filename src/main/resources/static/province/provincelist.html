@@ -67,7 +67,7 @@
                 <td>
                     <a href="javascript:;" @click="deleteProvince(province.id)">删除省份</a>
                     <a href="../viewspot/viewspotlist.html">景点列表</a>
-                    <a href="updateprovince.html">修改省份</a>
+                    <a :href="'./updateprovince.html?id='+province.id">修改省份</a>
                 </td>
             </tr>
             </tbody>

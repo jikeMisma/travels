@@ -25,6 +25,32 @@ public class ProvinceController {
     private ProvinceService provinceService;
 
     /**
+     * 修改省份信息
+     */
+    @PostMapping("update")
+    public Result update(@RequestBody Province province){
+        Result result =new Result();
+        try{
+            provinceService.update(province);
+            result.setMag("修改省份信息成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setStates(false).setMag(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
+     * 查询一个省份的信息进行修改
+     */
+    @GetMapping("findOne")
+    public Province findOne(String id){
+        return provinceService.findOne(id);
+
+    }
+
+    /**
      * 删除省份
      * @param id
      * @return

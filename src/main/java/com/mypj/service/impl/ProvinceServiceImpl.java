@@ -43,4 +43,14 @@ public class ProvinceServiceImpl implements ProvinceService {
     public void delete(String id) {
         provinceDao.delete(id);
     }
+
+    @Override
+    public Province findOne(String id) {
+        return provinceDao.findOne(id);
+    }
+
+    @Override
+    public void update(Province province) {
+        provinceDao.update(province);
+    }
 }

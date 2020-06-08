@@ -18,6 +18,8 @@ public interface BaseDao<T,K> {
 
     List<T> findAll();
 
+    T findOne(K k);
+
     //分页
     List<T> findByPage(@Param("start") Integer start,@Param("rows") Integer rows);
 

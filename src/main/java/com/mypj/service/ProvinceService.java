@@ -27,4 +27,10 @@ public interface ProvinceService {
 
     //删除省份的方法
     void delete(String id);
+
+    //查询省份信息
+    Province findOne(String id);
+
+    //修改省份信息
+    void update(Province province);
 }
