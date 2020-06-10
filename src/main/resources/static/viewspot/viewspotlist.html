@@ -75,7 +75,7 @@
                     <td><span v-text="place.hotticket"/></td>
                     <td><span v-text="place.dimticket"/></td>
                     <td style="text-align: center">
-                        <a href="#">删除景点</a><br>
+                        <a href="javascript:;" @click="deletePlace(place.id)">删除景点</a><br>
                         <a href="updateviewspot.html">修改景点</a>
                     </td>
                 </tr>
@@ -133,6 +133,20 @@
                     _this.palces = res.data.places;
                     _this.totalPage = res.data.totalPage;
                     _this.page=res.data.page;
+                });
+            },
+
+            //删除景点的方法
+            deletePlace(id){
+                console.log(id);
+
+                axios.get("http://localhost:8989/place/delete?id="+id).then((res)=>{
+                    if(res.data.states){
+                        alert(res.data.mag+"点击确定刷新数据！");
+                        location.reload();
+                    }else{
+                        alert(res.data.mag);
+                    }
                 });
             }
 

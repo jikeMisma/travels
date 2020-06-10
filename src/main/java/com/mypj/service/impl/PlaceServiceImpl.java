@@ -49,4 +49,18 @@ public class PlaceServiceImpl implements PlaceService {
         provinceService.update(province);
 
     }
+
+    @Override
+    public void delete(String id) {
+        //先更新景点个数 再去删除景点
+        Place place = placeDao.findOne(id);
+        Province province = provinceService.findOne(place.getProviceid());
+       province.setPlacecounts(province.getPlacecounts()-1);
+       provinceService.update(province);
+
+       //删除景点信息
+        placeDao.delete(id);
+
+
+    }
 }

@@ -77,9 +77,9 @@
         </a>
         <div id="pages">
             <a href="javascript:;" @click="findAll(page-1)" class="page" v-if="page>1"  v-if="page==1">&lt;上一页</a>
-            <a href="javascript:;" v-if="page==1" disabled="" class="page" v-if="page==1">&lt;上一页</a>
+           <!-- <a href="javascript:;" v-if="page==1" disabled="" class="page" v-if="page==1">&lt;上一页</a>-->
             <a href="javascript:;" class="page" v-for="indexpage in totalsPage" @click="findAll(indexpage)" v-text="indexpage"></a>
-            <a href="javascript:;" v-if="page==totalsPage" disabled="true" class="page">下一页&gt;</a>
+            <!--<a href="javascript:;" v-if="page==totalsPage" disabled="true" class="page">下一页&gt;</a>-->
             <a href="javascript:;" v-if="page<totalsPage" @click="findAll(page+1)" class="page">下一页&gt;</a>
         </div>
 

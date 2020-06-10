@@ -34,6 +34,19 @@ public class PlaceController {
     @Value("${upload.dir}")
     private String realPath;
 
+    @GetMapping("delete")
+    public Result delete(String id){
+        Result result = new Result();
+        try{
+            placeService.delete(id);
+            result.setMag("删除景点信息成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setStates(false).setMag(e.getMessage());
+        }
+        return result;
+    }
+
 
     /**
      * 保存景点信息

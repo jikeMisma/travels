@@ -16,4 +16,6 @@ public interface PlaceService {
     Integer findByProvinceIdCounts(String id);
 
     void save(Place place);
+
+    void delete(String id);
 }
