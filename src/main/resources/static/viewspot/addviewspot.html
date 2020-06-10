@@ -60,6 +60,7 @@
     </script>
 </head>
 <body>
+<div id="app">
     <div id="wrap">
         <div id="header">
             <div style="float: right;padding-top: 24px">2009/11/20</div>
@@ -72,39 +73,40 @@
             <form action="viewspotlist.html" method="post">
                 <label>
                     <div class="label-text">景&emsp;&emsp;点：</div>
-                    <input type="text" name="vname">
+                    <input type="text" v-model="place.name" name="name">
                 </label>
                 <label>
                     <div class="label-text">印象图片：</div>
                     <div style="text-align: center;padding-left: 36%">
                         <div id="upload-tip">+</div>
                         <img src="" alt="" id="img-show" style="display: none">
-                        <input type="file" id="imgfile" style="display: none" onchange="imgfileChange()">
+                        <input type="file" id="imgfile" ref="myfile" style="display: none" onchange="imgfileChange()">
                     </div>
                 </label>
                 <label>
                     <div class="label-text">旺季时间：</div>
-                    <input type="text" name="hottime">
+                    <input type="text" v-model="place.hottime" name="hottime">
                 </label>
                 <label>
                     <div class="label-text">旺季门票：</div>
-                    <input type="text" name="hotprice">
+                    <input type="text"  v-model="place.hotticket" name="hotticket">
                 </label>
                 <label>
                     <div class="label-text">淡季门票：</div>
-                    <input type="text" name="normalprice">
+                    <input type="text" v-model="place.dimticket" name="dimticket">
+                </label>
+                <label>
+                    <div class="label-text">景点描述：</div>
+                    <input type="text" v-model="place.placedis" name="placedis">
                 </label>
                 <label>
                     <div class="label-text">所属省份：</div>
-                    <select name="ofprovince">
-                        <option value="1">北京市</option>
-                        <option value="2">山东省</option>
-                        <option value="3">河南省</option>
-                        <option value="4">辽宁省</option>
-                        <option value="5">广西壮族自治区</option>
+                    <select v-model="place.proviceid" name="ofprovince">
+                        <option v-for="pro in provinces"  :value="pro.id" v-text="pro.name"></option>
+
                     </select>
                 </label>
-                <button type="submit">提 交</button>&emsp;
+                <button type="button" @click="savePlaceInfo">提 交</button>&emsp;
                 <a href="viewspotlist.html">返回</a>
             </form>
         </div>
@@ -112,5 +114,76 @@
             ABC@126.com
         </div>
     </div>
+</div>
 </body>
 </html>
+
+
+<script src="../js/vue.js"></script>
+<script src="../js/axios.min.js"></script>
+<script>
+    const app = new Vue({
+        el:"#app",
+        data:{
+
+            provinces:[],
+            place:{}
+
+        },
+        methods:{
+
+            //保存景点信息的方法
+            savePlaceInfo(){
+                //console.log(this.place);
+                let myfile = this.$refs.myfile;
+                let files = myfile.files;
+                let file = files[0];
+                let formDtata = new FormData();
+                formDtata.append("file",file);
+                formDtata.append("name",this.place.name);
+                formDtata.append("hottime",this.place.hottime);
+                formDtata.append("hotticket",this.place.hotticket);
+                formDtata.append("dimticket",this.place.dimticket);
+                formDtata.append("placedis",this.place.placedis);
+                formDtata.append("proviceid",this.place.proviceid);
+                //请求后台
+                axios({
+                    method:'post',
+                    url:'http://localhost:8989/place/save',
+                    data:formDtata,
+                    headers:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                }).then((res)=>{
+                   console.log(res.data);
+                   if(res.data.states){
+                       alert(res.data.mag+"点击确定回到景点列表");
+                       location.href="./viewspotlist.html?id="+this.place.proviceid;
+                   }else {
+                       alert(res.data.mag+"点击确定回到景点列表");
+                   }
+                });
+            },
+
+            findAllProvince(){
+                _this = this;
+                axios.get("http://localhost:8989/province/findByPage?rows=35").then((res)=>{
+                    console.log(res.data.provinces);
+                    _this.provinces=res.data.provinces;
+                });
+
+            }
+
+
+
+        },
+
+        created(){
+
+            //查询所有省份信息
+            this.findAllProvince();
+
+        }
+    })
+
+</script>

@@ -19,5 +19,10 @@
         select count(id) from t_place where proviceid=#{provinceId}
     </select>
 
+    <!--保存景点-->
+    <insert id="save" parameterType="Place" useGeneratedKeys="true" keyProperty="id">
+        insert into t_place values (#{id},#{name},#{picpath},#{hottime},#{hotticket},#{dimticket},#{placedis},#{proviceid})
+    </insert>
+
 
 </mapper>

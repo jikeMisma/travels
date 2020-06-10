@@ -14,4 +14,6 @@ public interface PlaceService {
     List<Place> findByProvinceIdPage(Integer page,  Integer rows,  String provinceId);
 
     Integer findByProvinceIdCounts(String id);
+
+    void save(Place place);
 }

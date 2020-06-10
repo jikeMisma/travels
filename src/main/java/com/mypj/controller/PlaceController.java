@@ -1,13 +1,19 @@
 package com.mypj.controller;
 
 import com.mypj.entity.Place;
+import com.mypj.entity.Result;
 import com.mypj.service.PlaceService;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +30,41 @@ public class PlaceController {
 
     @Autowired
     private PlaceService placeService;
+
+    @Value("${upload.dir}")
+    private String realPath;
+
+
+    /**
+     * 保存景点信息
+     * @param file
+     * @return
+     */
+    @PostMapping("save")
+    public Result save(MultipartFile file, Place place) throws IOException {
+
+//        System.out.println(file.getOriginalFilename());
+//        System.out.println(place);
+        Result result = new Result();
+        try{
+
+            //文件上传
+            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+            String newFilename = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+extension;
+            //base64
+            place.setPicpath(Base64Utils.encodeToString(file.getBytes()));
+            file.transferTo(new File(realPath,newFilename));
+            //place对象的保存
+            placeService.save(place);
+            result.setMag("保存景点信息成功！");
+        }catch (Exception e){
+            result.setStates(false).setMag(e.getMessage());
+        }
+
+
+
+        return result;
+    }
     /**
      * 根据省份id查询景点方法
      */
