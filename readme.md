@@ -20,29 +20,6 @@
 **代码整体架构预览**
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200611142752637.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L216Y19sb3Zl,size_16,color_FFFFFF,t_70#pic_center)
 
-**系统整体配置**
-
-```yaml
-	server.port=8989
-	spring.application.name=travels
-	
-	spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
-	spring.datasource.driver-class-name=com.mysql.jdbc.Driver
-	spring.datasource.url=jdbc:mysql://localhost:3306/travels?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-	spring.datasource.username=root
-	spring.datasource.password=277171
-	
-	mybatis.mapper-locations=classpath:com/mypj/mapper/*.xml
-	mybatis.type-aliases-package=com.mypj.entity
-	
-	logging.level.root=info
-	logging.level.com.mypj.Dao=debug
-	spring.resources.static-locations=file:${upload.dir}
-	
-	upload.dir=E:/travles_images
-
-
-```
 
 ## 页面预览
 ##### 登录
