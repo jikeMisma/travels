@@ -67,7 +67,7 @@
             <h1>旅游信息管理系统</h1>
         </div>
         <div id="header-bar"></div>
-        <div id="content" style="height: 440px">
+        <div id="content" style="height: 490px">
             <img src="../img/timg.jpg" style="float: right;height: 320px">
             <h2>添加景点</h2>
             <form action="viewspotlist.html" method="post">
@@ -107,7 +107,7 @@
                     </select>
                 </label>
                 <button type="button" @click="savePlaceInfo">提 交</button>&emsp;
-                <a href="viewspotlist.html">返回</a>
+                <a :href="'viewspotlist.html?id='+id">返回</a>
             </form>
         </div>
         <div id="footer">
@@ -127,7 +127,8 @@
         data:{
 
             provinces:[],
-            place:{}
+            place:{},
+            id:"",
 
         },
         methods:{
@@ -182,6 +183,9 @@
 
             //查询所有省份信息
             this.findAllProvince();
+            //获取省份id
+            let id = location.href.substring(location.href.indexOf("=")+1);
+            this.id = id;
 
         }
     })

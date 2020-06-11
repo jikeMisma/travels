@@ -48,56 +48,138 @@
     </script>
 </head>
 <body>
+<div id="app">
     <div id="wrap">
         <div id="header">
             <div style="float: right;padding-top: 24px">2009/11/20</div>
             <h1>旅游信息管理系统</h1>
         </div>
         <div id="header-bar"></div>
-        <div id="content" style="height: 440px">
+        <div id="content" style="height: 490px">
             <img src="../img/timg.jpg" style="float: right;height: 320px">
             <h2>修改景点</h2>
             <form action="viewspotlist.html" method="post">
                 <label>
                     <div class="label-text">景&emsp;&emsp;点：</div>
-                    <input type="text" name="vname" value="颐和园">
+                    <input type="text" v-model="place.name">
                 </label>
                 <label>
                     <div class="label-text">印象图片：</div>
                     <div style="text-align: center;padding-left: 36%">
-                        <img src="../img/yihy.jpg" alt="" id="img-show">
-                        <input type="file" id="imgfile" style="display: none" onchange="imgfileChange()">
+                        <img :src="src" alt="" id="img-show">
+                        <input type="file" id="imgfile"  ref="myfile" style="display: none" onchange="imgfileChange()">
                     </div>
                 </label>
                 <label>
                     <div class="label-text">旺季时间：</div>
-                    <input type="text" name="hottime" value="4.1~10.31">
+                    <input type="text" v-model="place.hottime">
                 </label>
                 <label>
                     <div class="label-text">旺季门票：</div>
-                    <input type="text" name="hotprice" value="30">
+                    <input type="text" v-model="place.hotticket">
                 </label>
                 <label>
                     <div class="label-text">淡季门票：</div>
-                    <input type="text" name="normalprice" value="20">
+                    <input type="text" v-model="place.dimticket">
+                </label>
+                <label>
+                    <div class="label-text">景点描述：</div>
+                    <input type="text" v-model="place.placedis">
                 </label>
                 <label>
                     <div class="label-text">所属省份：</div>
-                    <select name="ofprovince">
-                        <option value="1">北京市</option>
-                        <option value="2">山东省</option>
-                        <option value="3">河南省</option>
-                        <option value="4">辽宁省</option>
-                        <option value="5">广西壮族自治区</option>
+                    <select v-model="place.proviceid" name="ofprovince">
+                        <option v-for="pro in provinces"  :value="pro.id" v-text="pro.name"></option>
                     </select>
                 </label>
-                <button type="submit">提 交</button>&emsp;
-                <a href="viewspotlist.html">返回</a>
+                <button type="button" @click="updataPlace" style="background-color: #467aa7;font-size: 20px; ">提 交</button>&emsp;
+                <a :href="'viewspotlist.html?id='+place.proviceid">返回</a>
             </form>
         </div>
-        <div id="footer">
-            ABC@126.com
+        <div id="footer" style="font-size: 15px;text-decoration-color: #666666">
+            Power By springBoot @马志成
         </div>
     </div>
+</div>
 </body>
 </html>
+
+
+
+<script src="../js/vue.js"></script>
+<script src="../js/axios.min.js"></script>
+<script>
+    const app = new Vue({
+        el:"#app",
+        data:{
+            id:"",
+            place:{},
+            provinces:[] ,
+            src:"",
+        },
+        methods:{
+
+            //修改景点信息
+            updataPlace(){
+                //console.log(this.place);
+                let myfile = this.$refs.myfile;
+                let files = myfile.files;
+                let file = files[0];
+                let formDtata = new FormData();
+                formDtata.append("pic",file);
+                formDtata.append("id",this.place.id);
+                formDtata.append("name",this.place.name);
+                formDtata.append("hottime",this.place.hottime);
+                formDtata.append("hotticket",this.place.hotticket);
+                formDtata.append("dimticket",this.place.dimticket);
+                formDtata.append("placedis",this.place.placedis);
+                formDtata.append("proviceid",this.place.proviceid);
+                //请求后台
+                axios({
+                    method:'post',
+                    url:'http://localhost:8989/place/update',
+                    data:formDtata,
+                    headers:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                }).then((res)=>{
+                    console.log(res.data);
+                    if(res.data.states){
+                        alert(res.data.mag+"点击确定回到景点列表");
+                        location.href="./viewspotlist.html?id="+this.place.proviceid;
+                    }else {
+                        alert(res.data.mag+"点击确定回到景点列表");
+                    }
+                });
+            },
+
+            //根据id查询景点信息
+            findOnePlace(){
+                _this = this;
+                axios.get("http://localhost:8989/place/findOne?id="+this.id).then((res)=>{
+                    _this.place=res.data;
+                    _this.src="data:image/png;base64,"+_this.place.picpath;
+                })
+            },
+
+            //查询景点信息
+            findAllProvince(){
+                _this = this;
+                axios.get("http://localhost:8989/province/findByPage?rows=35").then((res)=>{
+                    console.log(res.data.provinces);
+                    _this.provinces=res.data.provinces;
+                });
+
+            }
+
+        },
+
+        created(){
+            let id = location.href.substring(location.href.indexOf("=")+1);
+            this.id = id;
+            this.findOnePlace();
+            this.findAllProvince();
+        }
+    })
+
+</script>

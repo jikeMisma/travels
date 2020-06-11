@@ -70,13 +70,13 @@
                  <tr>
                     <td rowspan="2"><span v-text="place.id"/></td>
                     <td rowspan="2"><span v-text="place.name"/></td>
-                    <td><img src="../img/tianam.jpg" class="viewspotimg"></td>
+                    <td><img :src="'data:image/png;base64,'+place.picpath" class="viewspotimg"></td>
                     <td><span  v-text="place.hottime"/></td>
                     <td><span v-text="place.hotticket"/></td>
                     <td><span v-text="place.dimticket"/></td>
                     <td style="text-align: center">
                         <a href="javascript:;" @click="deletePlace(place.id)">删除景点</a><br>
-                        <a href="updateviewspot.html">修改景点</a>
+                        <a :href="'updateviewspot.html?id='+place.id">修改景点</a>
                     </td>
                 </tr>
                 <tr>
@@ -88,7 +88,7 @@
                 </tr>
             </tbody>
         </table>
-        <a href="addviewspot.html"><button type="button">添加景点</button></a>&emsp;
+        <a :href="'addviewspot.html?id='+id"><button type="button" style="background-color: #467aa7;font-size: 20px; ">添加景点</button></a>&emsp;
         <a href="../province/provincelist.html">返回省份列表</a>
         <div id="pages">
             <a href="javascript:;" v-if="page!=1" class="page" @click="findAllPage(page-1)">&lt;上一页</a>
@@ -101,8 +101,8 @@
             <a href="javascript:;" class="page" v-if="page!=totalPage" @click="findAllPage(page+1)">下一页&gt;</a>
         </div>
     </div>
-    <div id="footer">
-        ABC@126.com
+    <div id="footer" style="font-size: 15px;text-decoration-color: #666666">
+        Power By springBoot @马志成
     </div>
 </div>
 </div>
@@ -139,15 +139,16 @@
             //删除景点的方法
             deletePlace(id){
                 console.log(id);
-
-                axios.get("http://localhost:8989/place/delete?id="+id).then((res)=>{
-                    if(res.data.states){
-                        alert(res.data.mag+"点击确定刷新数据！");
-                        location.reload();
-                    }else{
-                        alert(res.data.mag);
-                    }
-                });
+                if(confirm("确定要删除景点吗？")){
+                    axios.get("http://localhost:8989/place/delete?id="+id).then((res)=>{
+                        if(res.data.states){
+                            alert(res.data.mag+"点击确定刷新数据！");
+                            location.reload();
+                        }else{
+                            alert(res.data.mag);
+                        }
+                    });
+                }
             }
 
         },

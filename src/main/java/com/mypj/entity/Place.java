@@ -24,7 +24,7 @@ public class Place {
     private String id;
     private String name;
     private String picpath;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy/MM/dd")
     private Date hottime;
     private Double hotticket;
     private Double dimticket;

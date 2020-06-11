@@ -34,6 +34,46 @@ public class PlaceController {
     @Value("${upload.dir}")
     private String realPath;
 
+    /**
+     * 查询景点信息
+     */
+    @PostMapping("update")
+    public  Result update(MultipartFile pic,Place place) {
+        Result result = new Result();
+        try{
+            //文件上传
+            String extension = FilenameUtils.getExtension(pic.getOriginalFilename());
+            String newFilename = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+extension;
+            //base64
+            place.setPicpath(Base64Utils.encodeToString(pic.getBytes()));
+            pic.transferTo(new File(realPath,newFilename));
+
+            //修改景点信息
+            placeService.update(place);
+            result.setMag("修改景点信息成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setStates(false).setMag(e.getMessage());
+        }
+
+        return  result;
+    }
+
+    /**
+     * 查询景点信息
+     * @param id
+     * @return
+     */
+    @GetMapping("findOne")
+    public Place findOne(String id){
+        return placeService.findOne(id);
+    }
+
+    /**
+     * 景点删除方法
+     * @param id
+     * @return
+     */
     @GetMapping("delete")
     public Result delete(String id){
         Result result = new Result();

@@ -23,7 +23,7 @@
             padding-bottom:12px;
         }
         .label-text{
-            width: 30%;
+            width: 22%;
             float: left;
         }
     </style>
@@ -40,16 +40,16 @@
             <img src="../img/timg.jpg" style="float: right;height: 320px">
             <h2>添加省份</h2>
             <form action="provincelist.html" method="post">
-                <label>
-                    <div class="label-text">省&emsp;份：</div>
-                    <input type="text" v-model="province.name" >
+                <label style="width: 350px">
+                    <div class="label-text" style="font-size: 16px">省&emsp;份：</div>
+                    <input type="text" v-model="province.name" style="height: 25px;width: 240px" >
                 </label>
-                <label>
-                    <div class="label-text">标&emsp;签：</div>
-                    <input type="text"  v-model="province.tags" >
+                <label  style="width: 350px">
+                    <div class="label-text" style="font-size: 16px">标&emsp;签：</div>
+                    <input type="text"  v-model="province.tags" style="height: 25px;width: 240px">
                 </label>
-                <button type="button" @click="saveProvinceInfo">提 交</button>&emsp;
-                <a href="provincelist.html">返回</a>
+                <button type="button" @click="saveProvinceInfo" style="background-color: #467aa7;font-size: 20px; ">提 交</button>&emsp;
+                <a href="provincelist.html" style="margin: 25px">返回</a>
             </form>
         </div>
         <div id="footer">

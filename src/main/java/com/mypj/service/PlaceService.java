@@ -18,4 +18,8 @@ public interface PlaceService {
     void save(Place place);
 
     void delete(String id);
+
+    Place findOne(String id);
+
+    void update(Place place);
 }

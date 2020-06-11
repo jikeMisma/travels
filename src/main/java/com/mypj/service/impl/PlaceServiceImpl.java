@@ -63,4 +63,14 @@ public class PlaceServiceImpl implements PlaceService {
 
 
     }
+
+    @Override
+    public Place findOne(String id) {
+        return placeDao.findOne(id);
+    }
+
+    @Override
+    public void update(Place place) {
+        placeDao.update(place);
+    }
 }

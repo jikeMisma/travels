@@ -38,4 +38,17 @@
         delete from t_place where id=#{id}
     </delete>
 
+    <!--修改景点信息-->
+    <update id="update" parameterType="Place">
+        update t_place set
+            name=#{name},
+            picpath=#{picpath},
+            hottime=#{hottime},
+            hotticket=#{hotticket},
+            dimticket=#{dimticket},
+            placedis=#{placedis},
+            proviceid=#{proviceid}
+        where id=#{id}
+    </update>
+
 </mapper>

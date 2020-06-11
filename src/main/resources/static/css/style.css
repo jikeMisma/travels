@@ -22,6 +22,8 @@ body{
 #footer{
     background: #85C329;
     background: linear-gradient(#0a4b80,#65bcdd);
+    font-style: italic;
+    color: #666666;
     padding: 15px 15px 25px 15px;
 }
 #header-bar{
